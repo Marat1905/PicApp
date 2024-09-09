@@ -1,4 +1,5 @@
-﻿using PicApp.ViewModels.Base;
+﻿using PicApp.Validations;
+using PicApp.ViewModels.Base;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -8,15 +9,47 @@ namespace PicApp.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private string _passwordUser;
+        private readonly LoginValidation _loginValidation;
         public LoginViewModel()
         {
             _passwordUser = Preferences.Get("Password", String.Empty);
-            LoginCommand = new Command(OnLoginClicked);
+            _loginValidation = new LoginValidation();
+            LoginCommand = new Command(OnLoginClicked, Validate);
+            this.PropertyChanged +=
+               (_, __) => LoginCommand.ChangeCanExecute();
+        }
+
+        private bool Validate(object arg)
+        {
+            if (VaidateMessage() == null) 
+                return true;
+            return false;
+        }
+
+        private string VaidateMessage()
+        {
+            var result = _loginValidation.Validate(this);
+            if (result.Errors.Count > 0) 
+            { 
+                return result.Errors[0].ErrorMessage;
+            }
+            return null;
         }
 
         private void OnLoginClicked(object obj)
         {
-            
+            if (_passwordUser == string.Empty)
+            {
+                Preferences.Set("Password", _password);
+            }
+            else
+            {
+                if (_passwordUser != Password)
+                {
+                    LoginError = "Неверный ПИН-код";
+                    return;
+                }
+            }
         }
 
         /// <summary>Pin-code</summary>
@@ -25,7 +58,11 @@ namespace PicApp.ViewModels
         public string Password
         {
             get { return _password; }
-            set { SetProperty(ref _password, value); }
+            set 
+            {
+                LoginError = VaidateMessage();
+                SetProperty(ref _password, value);
+            }
         }
 
         /// <summary>Сообщение об ошибке</summary>
@@ -34,7 +71,7 @@ namespace PicApp.ViewModels
         public string LoginError
         {
             get { return _loginError; }
-            set { SetProperty(ref _password, value); }
+            set { SetProperty(ref _loginError, value); }
         }
 
         public Command LoginCommand { get; }

@@ -16,7 +16,7 @@
             <Entry Text="{Binding Password}"
                    IsPassword="True" 
                    x:Name="Password" 
-                   MaxLength="4"
+                   MaxLength="9"
                    Margin ="20,0"
                    TextColor="Black" 
                    Placeholder="PIN"
@@ -24,7 +24,7 @@
                    VerticalOptions="Center"
                    />
 
-            <Label Text="{Binding LoginError}"
+            <Label Text="{Binding LoginError, Mode=TwoWay}"
                    FontSize="Small"
                    TextColor="Red"
                    VerticalTextAlignment="Center" 
