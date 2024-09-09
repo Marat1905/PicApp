@@ -74,7 +74,7 @@ namespace PicApp.ViewModels
             if (SelectedPicture is null)
                 return;
 
-            var answer = await DisplayAlert("Внимание!", $"Удалить {SelectedPicture.NameFile}", "Да", "Нет");
+            var answer = await Application.Current.MainPage.DisplayAlert("Внимание!", $"Удалить {SelectedPicture.NameFile}", "Да", "Нет");
 
             if (answer == false)
             {
@@ -91,7 +91,7 @@ namespace PicApp.ViewModels
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка!", ex.Message, "OK");
+                await Application.Current.MainPage.DisplayAlert("Ошибка!", ex.Message, "OK");
             }
         }
     }
