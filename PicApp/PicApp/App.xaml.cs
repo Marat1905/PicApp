@@ -1,6 +1,5 @@
-﻿using System;
+﻿using PicApp.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace PicApp
 {
@@ -10,7 +9,7 @@ namespace PicApp
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()
