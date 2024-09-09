@@ -1,5 +1,6 @@
 ﻿using PicApp.Validations;
 using PicApp.ViewModels.Base;
+using PicApp.Views;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -36,7 +37,7 @@ namespace PicApp.ViewModels
             return null;
         }
 
-        private void OnLoginClicked(object obj)
+        private async void OnLoginClicked(object obj)
         {
             if (_passwordUser == string.Empty)
             {
@@ -50,6 +51,7 @@ namespace PicApp.ViewModels
                     return;
                 }
             }
+            await Application.Current.MainPage.Navigation.PushAsync(new GalleryPage());
         }
 
         /// <summary>Pin-code</summary>

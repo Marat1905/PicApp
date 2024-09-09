@@ -9,7 +9,8 @@ namespace PicApp
         {
             InitializeComponent();
 
-            MainPage = new LoginPage();
+            // Инициализация главного экрана и стека навигации
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()
