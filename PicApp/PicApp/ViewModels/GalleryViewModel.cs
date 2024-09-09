@@ -1,10 +1,10 @@
 ﻿using PicApp.Models;
 using PicApp.Services;
 using PicApp.ViewModels.Base;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using Xamarin.Forms;
-using Xamarin.Forms.Shapes;
 
 namespace PicApp.ViewModels
 {
@@ -23,14 +23,19 @@ namespace PicApp.ViewModels
             set { SetProperty(ref _pictureList, value); }
         }
 
+        /// <summary>Выбранное изображение</summary>
         private PictureInfo _selectedPicture;
 
+        /// <summary>Выбранное изображение</summary>
         public PictureInfo SelectedPicture
         {
             get { return _selectedPicture; }
             set { SetProperty(ref _selectedPicture, value); }
         }
 
+        public Command OpenPicrureCommand { get; }
+
+        public Command RemovePictureCommand { get; }
 
         public GalleryViewModel()
         {
@@ -38,8 +43,11 @@ namespace PicApp.ViewModels
             IPathProvider pathProvider = DependencyService.Get<IPathProvider>();
             picturesPath = pathProvider.GetPicturesFolderPath();
             bool isExist = Directory.Exists(picturesPath);
+            // OpenPicrureCommand = new Command(OpenPicrureClicked, Validate);
+            RemovePictureCommand = new Command(RemovePictureClicked);
             InitializeData();
         }
+
 
         private void InitializeData()
         {
@@ -58,6 +66,32 @@ namespace PicApp.ViewModels
             foreach (var file in files)
             {
                 _pictureList.Add(new PictureInfo(file.Name, file.FullName, file.CreationTime));
+            }
+        }
+
+        private async void RemovePictureClicked(object obj)
+        {
+            if (SelectedPicture is null)
+                return;
+
+            var answer = await DisplayAlert("Внимание!", $"Удалить {SelectedPicture.NameFile}", "Да", "Нет");
+
+            if (answer == false)
+            {
+                return;
+            }
+
+            try
+            {
+                if (File.Exists(SelectedPicture.PathToPicture))
+                {
+                    File.Delete(SelectedPicture.PathToPicture);
+                }
+                PictureList.Remove(SelectedPicture);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка!", ex.Message, "OK");
             }
         }
     }

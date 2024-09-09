@@ -28,7 +28,19 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-           
+            <Grid ColumnDefinitions="Auto" 
+                  RowDefinitions="45"
+                  Margin="10,15">
+                 <Button Text="Открыть"
+                         Command="{Binding OpenPicrureCommand}"
+                         Grid.Column="1" 
+                         HorizontalOptions="FillAndExpand"/>
+                <Button Text="❌Удалить"
+                        Command="{Binding RemovePictureCommand}"
+                        Grid.Column="2" 
+                        HorizontalOptions="FillAndExpand"/>
+
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
