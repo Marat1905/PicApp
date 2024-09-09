@@ -14,6 +14,8 @@ namespace PicApp.ViewModels
         /// <summary>Путь к каталогу </summary>
         private readonly string picturesPath;
 
+        private readonly IFileManager _fileManager;
+
         /// <summary>Коллекция изображений</summary>
         private ObservableCollection<PictureInfo> _pictureList = new ObservableCollection<PictureInfo>();
 
@@ -43,6 +45,9 @@ namespace PicApp.ViewModels
             Title = "Галерея";
             IPathProvider pathProvider = DependencyService.Get<IPathProvider>();
             picturesPath = pathProvider.GetPicturesFolderPath();
+
+            _fileManager= DependencyService.Get<IFileManager>();
+
             bool isExist = Directory.Exists(picturesPath);
             OpenPicrureCommand = new Command(OpenPicrureClicked);
             RemovePictureCommand = new Command(RemovePictureClicked);
@@ -94,7 +99,8 @@ namespace PicApp.ViewModels
             {
                 if (File.Exists(SelectedPicture.PathToPicture))
                 {
-                    File.Delete(SelectedPicture.PathToPicture);
+                     File.Delete(SelectedPicture.PathToPicture);
+                    _fileManager.DeleteFile(SelectedPicture.PathToPicture);
                 }
                 PictureList.Remove(SelectedPicture);
             }
