@@ -12,6 +12,7 @@
             <ListView x:Name="pictureList"
                    HasUnevenRows="True"
                    ItemsSource="{Binding PictureList}"
+                   SelectedItem="{Binding SelectedPicture}"
                    SeparatorVisibility="Default"
                    RowHeight="60"
                    CachingStrategy="RecycleElement">

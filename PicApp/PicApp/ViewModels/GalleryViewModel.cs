@@ -23,6 +23,13 @@ namespace PicApp.ViewModels
             set { SetProperty(ref _pictureList, value); }
         }
 
+        private PictureInfo _selectedPicture;
+
+        public PictureInfo SelectedPicture
+        {
+            get { return _selectedPicture; }
+            set { SetProperty(ref _selectedPicture, value); }
+        }
 
 
         public GalleryViewModel()
