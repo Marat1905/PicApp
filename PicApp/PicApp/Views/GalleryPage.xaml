@@ -2,15 +2,32 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PicApp.Views.GalleryPage"
-             xmlns:vm="clr-namespace:PicApp.ViewModels">
+             xmlns:vm="clr-namespace:PicApp.ViewModels"
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.BindingContext>
         <vm:GalleryViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <ListView x:Name="pictureList"
+                   HasUnevenRows="True"
+                   ItemsSource="{Binding PictureList}"
+                   SeparatorVisibility="Default"
+                   RowHeight="60"
+                   CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell
+                        ImageSource="{Binding PathToPicture}"
+                        Text="{Binding NameFile}"
+                        Detail="{Binding CreateDate}"
+                        TextColor="DodgerBlue"
+                        DetailColor="Gray">
+                        </ImageCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+           
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
