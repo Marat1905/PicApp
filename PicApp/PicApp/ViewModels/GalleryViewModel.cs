@@ -1,6 +1,7 @@
 ﻿using PicApp.Models;
 using PicApp.Services;
 using PicApp.ViewModels.Base;
+using PicApp.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -43,7 +44,7 @@ namespace PicApp.ViewModels
             IPathProvider pathProvider = DependencyService.Get<IPathProvider>();
             picturesPath = pathProvider.GetPicturesFolderPath();
             bool isExist = Directory.Exists(picturesPath);
-            // OpenPicrureCommand = new Command(OpenPicrureClicked, Validate);
+            OpenPicrureCommand = new Command(OpenPicrureClicked);
             RemovePictureCommand = new Command(RemovePictureClicked);
             InitializeData();
         }
@@ -67,6 +68,14 @@ namespace PicApp.ViewModels
             {
                 _pictureList.Add(new PictureInfo(file.Name, file.FullName, file.CreationTime));
             }
+        }
+
+        private async void OpenPicrureClicked(object obj)
+        {
+            if (SelectedPicture is null)
+                return;
+
+            await Application.Current.MainPage.Navigation.PushAsync(new PhotoPage(SelectedPicture));
         }
 
         private async void RemovePictureClicked(object obj)
